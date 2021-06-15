@@ -22,8 +22,7 @@ namespace NG_V0._0._0
     public partial class MainWindow : Window
     {
         public Random R = new Random();
-        public Square squareF = new Square(250, 250, 30);
-        public Triangle triangleF = new Triangle(50, 50, 35);
+        public List<Figure> figures = new List<Figure>();
 
         public MainWindow()
         {
@@ -41,26 +40,36 @@ namespace NG_V0._0._0
             timer1.Interval = new TimeSpan(0, 0, 0, 5);
             timer1.Start();
             #endregion
-            
-            NGGrid.Children.Add(squareF.polygon);
-            NGGrid.Children.Add(triangleF.polygon);
-            squareF.polygon.Fill = new SolidColorBrush(Color.FromRgb((byte)R.Next(0, 255), (byte)R.Next(0, 255), (byte)R.Next(255)));
-            triangleF.polygon.Fill = new SolidColorBrush(Color.FromRgb((byte)R.Next(0, 255), (byte)R.Next(0, 255), (byte)R.Next(255)));
+
+            for (int i = 0; i < 7; i++) 
+            {
+                figures.Add(new Square(R.Next(800), R.Next(450), R.Next(20,60)));
+                NGGrid.Children.Add(figures[figures.Count - 1].polygon);
+                figures[figures.Count - 1].polygon.Fill = new SolidColorBrush(Color.FromRgb((byte)R.Next(0, 255), (byte)R.Next(0, 255), (byte)R.Next(255)));
+            }
+            for (int i = 0; i < 7; i++)
+            {
+                figures.Add(new Triangle(R.Next(800), R.Next(450), R.Next(20, 60)));
+                NGGrid.Children.Add(figures[figures.Count-1].polygon);
+                figures[figures.Count - 1].polygon.Fill = new SolidColorBrush(Color.FromRgb((byte)R.Next(0, 255), (byte)R.Next(0, 255), (byte)R.Next(255)));
+            }
 
         }
         private void timer_Tick(object sender, EventArgs e)
         {
-            squareF.Move(squareF.vectormove);
-            squareF.Rotate(squareF.rotatemove);
-            triangleF.Move(triangleF.vectormove);
-            triangleF.Rotate(triangleF.rotatemove);
+            for (int i = 0; i < figures.Count; i++)
+            {
+                figures[i].Move(figures[i].vectormove);
+                figures[i].Rotate(figures[i].rotatemove);
+            }
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
-            squareF.rotatemove = 5/*R.Next(-30, 30)*/;
-            //squareF.vectormove = new Vector(R.Next(-10, 10), R.Next(-10, 10));
-            triangleF.rotatemove = 5 /*R.Next(-30, 30)*/;
-            //triangleF.vectormove = new Vector(R.Next(-10, 10), R.Next(-10, 10));
+            for (int i =0; i<figures.Count;i++)
+            {
+                figures[i].rotatemove = R.Next(-30, 30);
+                figures[i].vectormove = new Vector(R.Next(-5, 5), R.Next(-5, 5));
+            }
         }
 
         public class Figure
@@ -83,22 +92,32 @@ namespace NG_V0._0._0
                 double y;
                 rotate += angle;
                 List<Vector> list = new List<Vector>();
+                double sin = Math.Sin(angle * Math.PI / 180);
+                double cos = Math.Cos(angle * Math.PI / 180);
                 for (int i = 0; i < polygon.Points.Count; i++)
-                {
-                    x = polygon.Points[i].X - centr.x;
-                    y = polygon.Points[i].Y - centr.y;
-                    x = (x * Math.Cos(angle * Math.PI / 180)) - (y * Math.Sin(angle * Math.PI / 180));
-                    y = (x * Math.Sin(angle * Math.PI / 180)) + (y * Math.Cos(angle * Math.PI / 180));                    
+                {      
+                    x = (polygon.Points[i].X - centr.x) * cos - ((polygon.Points[i].Y - centr.y) * sin);
+                    y = (polygon.Points[i].X - centr.x) * sin + ((polygon.Points[i].Y - centr.y) * cos);                    
                     polygon.Points[i] = new Point(x + centr.x, y + centr.y);
                 }
 
             }
             public void Move(Vector move)
             {
-                centr += move;
                 for (int i = 0; i < polygon.Points.Count; i++)
                 {
-                    polygon.Points[i] = new Point(polygon.Points[i].X + move.x, polygon.Points[i].Y + move.y);
+                    polygon.Points[i] = new Point(polygon.Points[i].X - centr.x, polygon.Points[i].Y - centr.y);
+                }
+                centr += move;
+                if (centr.x < 0) { centr.x += 800; }
+                else if (centr.x > 800) { centr.x = 800 - centr.x; }
+
+                if (centr.y < 0) { centr.y += 430; }
+                else if (centr.y > 450) { centr.y = 450 - centr.y; }
+
+                for (int i = 0; i < polygon.Points.Count; i++)
+                {
+                    polygon.Points[i] = new Point(polygon.Points[i].X + centr.x, polygon.Points[i].Y + centr.y);
                 }
             }
         }
