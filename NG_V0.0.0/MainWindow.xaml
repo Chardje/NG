@@ -11,5 +11,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Rectangle  Width="800" Height="450" Margin="0,0" Stroke="Red" HorizontalAlignment="Left" VerticalAlignment="Top" />
     </Grid>
 </Window>
