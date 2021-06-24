@@ -44,7 +44,7 @@ namespace NG_V0._0._0
             //timer1.Start();
             #endregion
 
-            for (int i = 0; i < 7; i++) 
+            for (int i = 0; i < 4; i++) 
             {
                 figures.Add(new Square(R.Next(800), R.Next(450), R.Next(20, 60)));
                 figures.Add(new Triangle(R.Next(800), R.Next(450), R.Next(20, 60)));
@@ -58,15 +58,22 @@ namespace NG_V0._0._0
             }
 
             timer1_Tick(null, null);
-            //el.RenderTransform = new RotateTransform(10);
-            
         }
         private void timer_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < figures.Count; i++)
             {
+                for (int ii = 0; ii < figures.Count; ii++)
+                {
+                    if (Colision(figures[i],figures[ii])&&i!=ii)
+                    {
+                        figures[i].vectormove.x *= -1;
+                        figures[i].vectormove.y *= -1;
+                    }
+                }
                 figures[i].Move(figures[i].vectormove);
                 figures[i].Rotate(figures[i].rotatemove);
+                
             }
         }
         private void timer1_Tick(object sender, EventArgs e)
@@ -84,6 +91,8 @@ namespace NG_V0._0._0
             public Vector vectormove;
             public int rotatemove;
             private byte border;
+            public int _side;
+
             public abstract Shape Shape { get; }
 
             public Figure(int x, int y)
@@ -129,6 +138,10 @@ namespace NG_V0._0._0
                 if (centr.y < 0) { centr.y += 450; }
                 else if (centr.y > 450) { centr.y -= 450; }
             }
+            public virtual Polygon GivePoligon()
+            {
+                return null;
+            }
         }
 
         public class EllipseF : Figure
@@ -138,6 +151,7 @@ namespace NG_V0._0._0
 
             public EllipseF(int x, int y, int diameter) : base(x, y)
             {
+                _side = diameter;
                 _figura = new Ellipse();
                 _figura.Width = diameter;
                 _figura.Height = diameter;
@@ -174,7 +188,10 @@ namespace NG_V0._0._0
             }
 
             public override Shape Shape => _figura;
-
+            public override Polygon GivePoligon()
+            {
+                return _figura;
+            }
             public override void Rotate(int angle) 
             {
                 double x;
@@ -249,5 +266,103 @@ namespace NG_V0._0._0
             }
         }
 
+        public bool Colision (Figure x1,Figure x2)
+        {
+            List<Figure> x = new List<Figure>() {x1,x2};
+            bool XBigest = x1.centr.x > x2.centr.x;
+            bool YBigest = x1.centr.y > x2.centr.y;
+            bool colx = false, coly = false;
+
+            //x
+
+            if (x[XBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+            {
+                //если фігура1 - елипс
+                if (x[!XBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+                {
+                    //если фігура2 - елипс
+                    colx=x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
+                }
+                else
+                {
+                    //если фігура2 - полигон
+                    for (int i = 0; i < x[!XBigest ? 0 : 1].GivePoligon().Points.Count ; i++) 
+                    {
+                        colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].GivePoligon().Points[i].X < 0;
+
+                    }
+                }
+            }
+            else 
+            {
+                //если фігура1 - полигон
+                if (x[!XBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+                {
+                    //если фігура2 - елипс
+                    for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count ; i++)
+                    {
+                        colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
+                    }
+                }
+                else
+                {
+                    //если фігура2 - полигон
+                    for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
+                    {
+                        for (int ii = 0; ii < x[!XBigest ? 0 : 1].GivePoligon().Points.Count ; ii++)
+                        {
+                            colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].GivePoligon().Points[ii].X < 0;
+                        }
+                    }
+
+                }
+
+            }
+
+            //y
+
+            if (x[YBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+            {
+                //если фігура1 - елипс
+                if (x[!YBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+                {
+                    //если фігура2 - елипс
+                    coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
+                }
+                else
+                {
+                    //если фігура2 - полигон
+                    for (int i = 0; i < x[!YBigest ? 0 : 1].GivePoligon().Points.Count ; i++)
+                    {
+                        coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].GivePoligon().Points[i].Y < 0;
+
+                    }
+                }
+            }
+            else
+            {
+                //если фігура1 - полигон
+                if (x[!YBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+                {
+                    //если фігура2 - елипс
+                    for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count ; i++)
+                    {
+                        coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!XBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
+                    }
+                }
+                else
+                {
+                    //если фігура2 - полигон
+                    for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count ; i++)
+                    {
+                        for (int ii = 0; ii < x[!YBigest ? 0 : 1].GivePoligon().Points.Count ; ii++)
+                        {
+                            coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].GivePoligon().Points[ii].Y < 0;
+                        }
+                    }
+                }
+            }
+            return colx&&coly;
+        }
     }
 }
