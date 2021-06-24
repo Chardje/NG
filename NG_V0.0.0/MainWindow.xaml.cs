@@ -65,6 +65,10 @@ namespace NG_V0._0._0
             {
                 figures[i].Move(figures[i].vectormove);
                 figures[i].Rotate(figures[i].rotatemove);
+                
+            }
+            for (int i = 0; i < figures.Count; i++)
+            {
                 for (int ii = 0; ii < figures.Count; ii++)
                 {
                     if (Colision(figures[i], figures[ii]) && i != ii)
@@ -75,7 +79,7 @@ namespace NG_V0._0._0
                     }
                     else
                     {
-                        figures[i].Shape.Fill = new SolidColorBrush( Color.FromRgb(0, 255, 0));
+                        figures[i].Shape.Fill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
 
                     }
                 }
@@ -282,14 +286,14 @@ namespace NG_V0._0._0
             {
                 for (int ii = 0; ii < x[!XBigest ? 0 : 1].GivePoligon().Points.Count; ii++)
                 {
-                    colx = colx || x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].GivePoligon().Points[ii].X < 0;
+                    colx = colx || x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].GivePoligon().Points[ii].X <= 0;
                 }
             }
             for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count; i++)
             {
                 for (int ii = 0; ii < x[!YBigest ? 0 : 1].GivePoligon().Points.Count; ii++)
                 {
-                    coly = coly || x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].GivePoligon().Points[ii].Y < 0;
+                    coly = coly || x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].GivePoligon().Points[ii].Y <= 0;
                 }
             }
             return colx && coly;
@@ -306,14 +310,14 @@ namespace NG_V0._0._0
             {
                 for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                 {
-                    colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
+                    colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side <= 0;
                 }
             }
             else
             {
                 for (int i = 0; i < x[!XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                 {
-                    colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].GivePoligon().Points[i].X < 0;
+                    colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].GivePoligon().Points[i].X <= 0;
                 }
             }
 
@@ -321,7 +325,7 @@ namespace NG_V0._0._0
             {
                 for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                 {
-                    coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
+                    coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side <= 0;
                 }
             }
             else
@@ -341,8 +345,8 @@ namespace NG_V0._0._0
             bool YBigest = x1.centr.y > x2.centr.y;
             bool colx = false, coly = false;
 
-            colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
-            coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
+            colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side <= 0;
+            coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side <= 0;
 
             return colx && coly;
 
