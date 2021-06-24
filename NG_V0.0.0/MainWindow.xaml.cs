@@ -275,92 +275,57 @@ namespace NG_V0._0._0
 
             //x
 
-            if (x[XBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+            if (x[0].GetType() == new EllipseF(0, 0, 0).GetType() && x[1].GetType() == new EllipseF(0, 0, 0).GetType())
             {
-                //если фігура1 - елипс
-                if (x[!XBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
-                {
-                    //если фігура2 - елипс
-                    colx=x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
-                }
-                else
-                {
-                    //если фігура2 - полигон
-                    for (int i = 0; i < x[!XBigest ? 0 : 1].GivePoligon().Points.Count ; i++) 
-                    {
-                        colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].GivePoligon().Points[i].X < 0;
-
-                    }
-                }
+                //если фігура1 - елипс                
+                //если фігура2 - елипс
+                colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
+                coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
             }
-            else 
+            else if (x[0].GetType() == new EllipseF(0, 0, 0).GetType() || x[1].GetType() == new EllipseF(0, 0, 0).GetType())
             {
-                //если фігура1 - полигон
-                if (x[!XBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+                //если фігура1 - полигон               
+                //если фігура2 - елипс
+                if (XBigest == YBigest)
                 {
-                    //если фігура2 - елипс
-                    for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count ; i++)
-                    {
-                        colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
-                    }
-                }
-                else
-                {
-                    //если фігура2 - полигон
                     for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                     {
-                        for (int ii = 0; ii < x[!XBigest ? 0 : 1].GivePoligon().Points.Count ; ii++)
-                        {
-                            colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].GivePoligon().Points[ii].X < 0;
-                        }
+                        colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
+                        coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
                     }
-
                 }
-
-            }
-
-            //y
-
-            if (x[YBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
-            {
-                //если фігура1 - елипс
-                if (x[!YBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+                else if (XBigest)
                 {
-                    //если фігура2 - елипс
-                    coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
-                }
-                else
-                {
-                    //если фігура2 - полигон
-                    for (int i = 0; i < x[!YBigest ? 0 : 1].GivePoligon().Points.Count ; i++)
+                    for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                     {
+                        colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
                         coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].GivePoligon().Points[i].Y < 0;
 
                     }
                 }
+                else
+                {
+                    for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
+                    {
+                        colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].GivePoligon().Points[i].X < 0;
+                        coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].GivePoligon().Points[i].Y < 0;
+                    }
+                } 
             }
             else
             {
-                //если фігура1 - полигон
-                if (x[!YBigest ? 0 : 1].GetType() == new EllipseF(0, 0, 0).GetType())
+
+                //если фігура2 - полигон
+                for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                 {
-                    //если фігура2 - елипс
-                    for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count ; i++)
+                    for (int ii = 0; ii < x[!XBigest ? 0 : 1].GivePoligon().Points.Count; ii++)
                     {
-                        coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!XBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
+                        colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].GivePoligon().Points[ii].X < 0;
+                        coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].GivePoligon().Points[ii].Y < 0;
+
                     }
                 }
-                else
-                {
-                    //если фігура2 - полигон
-                    for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count ; i++)
-                    {
-                        for (int ii = 0; ii < x[!YBigest ? 0 : 1].GivePoligon().Points.Count ; ii++)
-                        {
-                            coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].GivePoligon().Points[ii].Y < 0;
-                        }
-                    }
-                }
+            }
             }
             return colx&&coly;
         }
