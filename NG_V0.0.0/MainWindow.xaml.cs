@@ -325,8 +325,7 @@ namespace NG_V0._0._0
 
                     }
                 }
-            }
-            }
+            }            
             return colx&&coly;
         }
     }
