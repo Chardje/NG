@@ -69,8 +69,14 @@ namespace NG_V0._0._0
                 {
                     if (Colision(figures[i], figures[ii]) && i != ii)
                     {
-                        figures[i].vectormove.x *= -1;
-                        figures[i].vectormove.y *= -1;
+                        figures[i].Shape.Fill = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                        //figures[i].vectormove.x *= -1;
+                        //figures[i].vectormove.y *= -1;
+                    }
+                    else
+                    {
+                        figures[i].Shape.Fill = new SolidColorBrush( Color.FromRgb(0, 255, 0));
+
                     }
                 }
             }
