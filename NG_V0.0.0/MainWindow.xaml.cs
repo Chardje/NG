@@ -314,18 +314,25 @@ namespace NG_V0._0._0
             }
             else
             {
-
+                //если фігура1 - полигон
                 //если фігура2 - полигон
                 for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                 {
                     for (int ii = 0; ii < x[!XBigest ? 0 : 1].GivePoligon().Points.Count; ii++)
                     {
                         colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].GivePoligon().Points[ii].X < 0;
+                    }
+                }
+                for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count; i++)
+                {
+                    for (int ii = 0; ii < x[!YBigest ? 0 : 1].GivePoligon().Points.Count; ii++)
+                    {
                         coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].GivePoligon().Points[ii].Y < 0;
 
                     }
                 }
-            }            
+
+            }
             return colx&&coly;
         }
     }
