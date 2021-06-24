@@ -44,11 +44,11 @@ namespace NG_V0._0._0
             //timer1.Start();
             #endregion
 
-            for (int i = 0; i < 4; i++) 
+            for (int i = 0; i < 6; i++) 
             {
                 figures.Add(new Square(R.Next(800), R.Next(450), R.Next(20, 60)));
                 figures.Add(new Triangle(R.Next(800), R.Next(450), R.Next(20, 60)));
-                figures.Add(new EllipseF(R.Next(800), R.Next(450), R.Next(20, 60)));
+                //figures.Add(new EllipseF(R.Next(800), R.Next(450), R.Next(20, 60)));
 
             }
             for (int i = 0; i < figures.Count; i++)
@@ -63,17 +63,16 @@ namespace NG_V0._0._0
         {
             for (int i = 0; i < figures.Count; i++)
             {
+                figures[i].Move(figures[i].vectormove);
+                figures[i].Rotate(figures[i].rotatemove);
                 for (int ii = 0; ii < figures.Count; ii++)
                 {
-                    if (Colision(figures[i],figures[ii])&&i!=ii)
+                    if (Colision(figures[i], figures[ii]) && i != ii)
                     {
                         figures[i].vectormove.x *= -1;
                         figures[i].vectormove.y *= -1;
                     }
                 }
-                figures[i].Move(figures[i].vectormove);
-                figures[i].Rotate(figures[i].rotatemove);
-                
             }
         }
         private void timer1_Tick(object sender, EventArgs e)
@@ -277,14 +276,14 @@ namespace NG_V0._0._0
             {
                 for (int ii = 0; ii < x[!XBigest ? 0 : 1].GivePoligon().Points.Count; ii++)
                 {
-                    colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].GivePoligon().Points[ii].X < 0;
+                    colx = colx || x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].GivePoligon().Points[ii].X < 0;
                 }
             }
             for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count; i++)
             {
                 for (int ii = 0; ii < x[!YBigest ? 0 : 1].GivePoligon().Points.Count; ii++)
                 {
-                    coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].GivePoligon().Points[ii].Y < 0;
+                    coly = coly || x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].GivePoligon().Points[ii].Y < 0;
                 }
             }
             return colx && coly;
@@ -297,23 +296,36 @@ namespace NG_V0._0._0
             bool YBigest = x1.centr.y > x2.centr.y;
             bool colx = false, coly = false;
 
-            
+            if (x[XBigest ? 0 : 1].GetType() == typeof(PoligonF))
+            {
+                for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
+                {
+                    colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < x[!XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
+                {
+                    colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].GivePoligon().Points[i].X < 0;
+                }
+            }
 
+            if (x[YBigest ? 0 : 1].GetType() == typeof(PoligonF))
+            {
+                for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count; i++)
+                {
+                    coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < x[!YBigest ? 0 : 1].GivePoligon().Points.Count; i++)
+                {
+                    coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side- x[!YBigest ? 0 : 1].GivePoligon().Points[i].Y < 0;
+                }
+            }
             return colx && coly;
-
-        }
-
-        public bool Colision(PoligonF x1, EllipseF x2)
-        {
-            List<Figure> x = new List<Figure>() { x1, x2 };
-            bool XBigest = x1.centr.x > x2.centr.x;
-            bool YBigest = x1.centr.y > x2.centr.y;
-            bool colx = false, coly = false;
-
-
-
-            return colx && coly;
-
         }
 
         public bool Colision(EllipseF x1, EllipseF x2)
@@ -330,15 +342,10 @@ namespace NG_V0._0._0
 
         }
 
-
         public bool Colision (Figure x1,Figure x2)
         {
-            List<Figure> x = new List<Figure>() {x1,x2};
             bool XBigest = x1.centr.x > x2.centr.x;
             bool YBigest = x1.centr.y > x2.centr.y;
-            bool colx = false, coly = false;
-
-            //x
 
             if (x1.GetType() == typeof(EllipseF) && x2.GetType() == typeof(EllipseF))
             {
@@ -346,59 +353,21 @@ namespace NG_V0._0._0
                 //если фігура2 - елипс
                 return Colision(new EllipseF(x1.centr.x, x1.centr.y, x1._side), new EllipseF(x2.centr.x, x2.centr.y, x2._side));
             }
-            else if (x1.GetType() == typeof(PoligonF) && x2.GetType() == typeof(PoligonF))
-            {
-                //если фігура1 - полигон
-                //если фігура2 - полигон
-                return Colision(new PoligonF(x1.centr.x, x1.centr.y, x1.GivePoligon()), new PoligonF(x2.centr.x, x2.centr.y, x2.GivePoligon()));
-            }
-
             else if (x1.GetType() == typeof(EllipseF))
             {
                 //если фігура1 - полигон               
                 //если фігура2 - елипс
                 return Colision(new EllipseF(x1.centr.x, x1.centr.y, x1._side), new PoligonF(x2.centr.x, x2.centr.y, x2.GivePoligon()));
-                if (XBigest == YBigest)
-                {
-                    if (x[0].GetType() == typeof(EllipseF))
-                    {
-                        for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
-                        {
-                            colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
-                            coly = x[YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side < 0;
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
-                        {
-                            colx = x[!XBigest ? 0 : 1].GivePoligon().Points[i].X - x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side < 0;
-                            coly = x[!YBigest ? 0 : 1].GivePoligon().Points[i].Y - x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side < 0;
-                        }
-                    }
-                    
-                }
-                else if (XBigest)
-                {
-                    for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
-                    {
-                        colx = x[XBigest ? 0 : 1].GivePoligon().Points[i].X - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side < 0;
-                        coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].GivePoligon().Points[i].Y < 0;
-
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
-                    {
-                        colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side - x[!XBigest ? 0 : 1].GivePoligon().Points[i].X < 0;
-                        coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side - x[!YBigest ? 0 : 1].GivePoligon().Points[i].Y < 0;
-                    }
-                } 
             }
             else if (x2.GetType() == typeof(EllipseF))
             {
-                return Colision(new PoligonF(x1.centr.x, x1.centr.y, x1.GivePoligon()), new EllipseF(x2.centr.x, x2.centr.y, x2._side));
+                return Colision( new EllipseF(x2.centr.x, x2.centr.y, x2._side), new PoligonF(x1.centr.x, x1.centr.y, x1.GivePoligon()));
+            }
+            else// if (x1.GetType() == typeof(PoligonF) && x2.GetType() == typeof(PoligonF))
+            {
+                //если фігура1 - полигон
+                //если фігура2 - полигон
+                return Colision(new PoligonF(x1.centr.x, x1.centr.y, x1.GivePoligon()), new PoligonF(x2.centr.x, x2.centr.y, x2.GivePoligon()));
             }
             return false;
         }
