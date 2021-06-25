@@ -274,7 +274,7 @@ namespace NG_V0._0._0
             }
         }
 
-        public bool Colision(PoligonF x1, PoligonF x2)
+        public static bool Colision(PoligonF x1, PoligonF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
@@ -298,7 +298,7 @@ namespace NG_V0._0._0
             return colx && coly;
         }
 
-        public bool Colision(EllipseF x1, PoligonF x2)
+        public static bool Colision(EllipseF x1, PoligonF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
@@ -337,7 +337,7 @@ namespace NG_V0._0._0
             return colx && coly;
         }
 
-        public bool Colision(EllipseF x1, EllipseF x2)
+        public static bool Colision(EllipseF x1, EllipseF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
@@ -351,7 +351,7 @@ namespace NG_V0._0._0
 
         }
 
-        public bool Colision (Figure x1,Figure x2)
+        public static bool Colision (Figure x1,Figure x2)
         {
             bool XBigest = x1.centr.x > x2.centr.x;
             bool YBigest = x1.centr.y > x2.centr.y;
