@@ -22,6 +22,8 @@ namespace NG_V0._0._0
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly SolidColorBrush brushForUncollided = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+        private readonly SolidColorBrush brushForCollided = new SolidColorBrush(Color.FromRgb(255, 0, 0));
         public Random R = new Random();
         public List<Figure> figures = new List<Figure>();
         const byte tttos = 1;//teleport to the other side 
@@ -66,19 +68,20 @@ namespace NG_V0._0._0
             {
                 figures[i].Move(figures[i].vectormove);
                 figures[i].Rotate(figures[i].rotatemove);
-                figures[i].Shape.Fill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+                figures[i].Shape.Fill = brushForUncollided;
 
             }
             for (int i = 0; i < figures.Count; i++)
             {
-                for (int ii = 0; ii < figures.Count ; ii++)
+                for (int j = i + 1; j < figures.Count ; j++)
                 {
-                    if (Collide(figures[i], figures[ii]) && i != ii)
+                    if (Collide(figures[i], figures[ii]))
                     {
-                        figures[i].Shape.Fill = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                        figures[i].Shape.Fill = brushForCollided;
+                        figures[j].Shape.Fill = brushForCollided;
                         //figures[i].vectormove.x *= -1;
                         //figures[i].vectormove.y *= -1;
-                    }                    
+                    }
                 }
             }
         }
@@ -272,7 +275,7 @@ namespace NG_V0._0._0
             }
         }
 
-        public bool Collide(PoligonF x1, PoligonF x2)
+        public static bool Collide(PoligonF x1, PoligonF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
@@ -296,7 +299,7 @@ namespace NG_V0._0._0
             return colx && coly;
         }
 
-        public bool Collide(EllipseF x1, PoligonF x2)
+        public static bool Collide(EllipseF x1, PoligonF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
@@ -335,7 +338,7 @@ namespace NG_V0._0._0
             return colx && coly;
         }
 
-        public bool Collide(EllipseF x1, EllipseF x2)
+        public static bool Collide(EllipseF x1, EllipseF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
@@ -349,7 +352,7 @@ namespace NG_V0._0._0
 
         }
 
-        public bool Collide(Figure x1, Figure x2)
+        public static bool Collide(Figure x1, Figure x2)
         {
             if (x1 is EllipseF)
             {
