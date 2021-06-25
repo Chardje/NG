@@ -61,23 +61,26 @@ namespace NG_V0._0._0
         }
         private void timer_Tick(object sender, EventArgs e)
         {
+            SolidColorBrush brushForUncollided = new SolidColorBrush(Color.FromRgb(0, 255, 0));
             for (int i = 0; i < figures.Count; i++)
             {
                 figures[i].Move(figures[i].vectormove);
                 figures[i].Rotate(figures[i].rotatemove);
-                figures[i].Shape.Fill = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+                figures[i].Shape.Fill = brushForUncollided;
 
             }
+            SolidColorBrush brushForCollided = new SolidColorBrush(Color.FromRgb(255, 0, 0));
             for (int i = 0; i < figures.Count; i++)
             {
-                for (int ii = 0; ii < figures.Count ; ii++)
+                for (int j = i + 1; j < figures.Count ; j++)
                 {
-                    if (Colision(figures[i], figures[ii]) && i != ii)
+                    if (Colision(figures[i], figures[j]))
                     {
-                        figures[i].Shape.Fill = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                        figures[i].Shape.Fill = brushForCollided;
+                        figures[j].Shape.Fill = brushForCollided;
                         //figures[i].vectormove.x *= -1;
                         //figures[i].vectormove.y *= -1;
-                    }                    
+                    }
                 }
             }
         }
