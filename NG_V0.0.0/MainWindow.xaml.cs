@@ -21,6 +21,8 @@ namespace NG_V0._0._0
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly SolidColorBrush brushForUncollided = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+        private readonly SolidColorBrush brushForCollided = new SolidColorBrush(Color.FromRgb(255, 0, 0));
         public Random R = new Random();
         public List<Figure> figures = new List<Figure>();
         const byte tttos = 1;//teleport to the other side 
@@ -61,7 +63,6 @@ namespace NG_V0._0._0
         }
         private void timer_Tick(object sender, EventArgs e)
         {
-            SolidColorBrush brushForUncollided = new SolidColorBrush(Color.FromRgb(0, 255, 0));
             for (int i = 0; i < figures.Count; i++)
             {
                 figures[i].Move(figures[i].vectormove);
@@ -69,7 +70,6 @@ namespace NG_V0._0._0
                 figures[i].Shape.Fill = brushForUncollided;
 
             }
-            SolidColorBrush brushForCollided = new SolidColorBrush(Color.FromRgb(255, 0, 0));
             for (int i = 0; i < figures.Count; i++)
             {
                 for (int j = i + 1; j < figures.Count ; j++)
