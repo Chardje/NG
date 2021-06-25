@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,7 +73,7 @@ namespace NG_V0._0._0
             {
                 for (int ii = 0; ii < figures.Count ; ii++)
                 {
-                    if (Colision(figures[i], figures[ii]) && i != ii)
+                    if (Collide(figures[i], figures[ii]) && i != ii)
                     {
                         figures[i].Shape.Fill = new SolidColorBrush(Color.FromRgb(255, 0, 0));
                         //figures[i].vectormove.x *= -1;
@@ -271,7 +272,7 @@ namespace NG_V0._0._0
             }
         }
 
-        public bool Colision(PoligonF x1, PoligonF x2)
+        public bool Collide(PoligonF x1, PoligonF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
@@ -295,14 +296,14 @@ namespace NG_V0._0._0
             return colx && coly;
         }
 
-        public bool Colision(EllipseF x1, PoligonF x2)
+        public bool Collide(EllipseF x1, PoligonF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
             bool YBigest = x1.centr.y > x2.centr.y;
             bool colx = false, coly = false;
 
-            if (x[XBigest ? 0 : 1].GetType() == typeof(PoligonF))
+            if (x[XBigest ? 0 : 1] is PoligonF)
             {
                 for (int i = 0; i < x[XBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                 {
@@ -317,7 +318,7 @@ namespace NG_V0._0._0
                 }
             }
 
-            if (x[YBigest ? 0 : 1].GetType() == typeof(PoligonF))
+            if (x[YBigest ? 0 : 1] is PoligonF)
             {
                 for (int i = 0; i < x[YBigest ? 0 : 1].GivePoligon().Points.Count; i++)
                 {
@@ -334,7 +335,7 @@ namespace NG_V0._0._0
             return colx && coly;
         }
 
-        public bool Colision(EllipseF x1, EllipseF x2)
+        public bool Collide(EllipseF x1, EllipseF x2)
         {
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
@@ -348,34 +349,52 @@ namespace NG_V0._0._0
 
         }
 
-        public bool Colision (Figure x1,Figure x2)
+        public bool Collide(Figure x1, Figure x2)
         {
-            bool XBigest = x1.centr.x > x2.centr.x;
-            bool YBigest = x1.centr.y > x2.centr.y;
-
-            if (x1.GetType() == typeof(EllipseF) && x2.GetType() == typeof(EllipseF))
+            if (x1 is EllipseF)
             {
-                //если фігура1 - елипс                
-                //если фігура2 - елипс
-                return Colision(new EllipseF(x1.centr.x, x1.centr.y, x1._side), new EllipseF(x2.centr.x, x2.centr.y, x2._side));
+                EllipseF e1 = (EllipseF)x1;
+                if (x2 is EllipseF)
+                {
+                    EllipseF e2 = (EllipseF)x2;
+                    return Collide(e1, e2);
+                }
+                else if (x2 is PoligonF)
+                {
+                    PoligonF p2 = (PoligonF)x2;
+                    return Collide(e1, p2);
+                }
+                else
+                {
+                    Debug.Fail($"x2 is {x2}, x2.GetType={x2?.GetType()}");
+                    return false;
+                }
             }
-            else if (x1.GetType() == typeof(EllipseF))
+            else if (x1 is PoligonF)
             {
-                //если фігура1 - полигон               
-                //если фігура2 - елипс
-                return Colision(new EllipseF(x1.centr.x, x1.centr.y, x1._side), new PoligonF(x2.centr.x, x2.centr.y, x2.GivePoligon()));
+                PoligonF p1 = (PoligonF)x1;
+                if (x2 is EllipseF)
+                {
+                    EllipseF e2 = (EllipseF)x2;
+                    //return Collide(p1, e2); // StackOverflow
+                    return Collide(e2, p1);
+                }
+                else if (x2 is PoligonF)
+                {
+                    PoligonF p2 = (PoligonF)x2;
+                    return Collide(p1, p2);
+                }
+                else
+                {
+                    Debug.Fail($"x2 is {x2}, x2.GetType={x2?.GetType()}");
+                    return false;
+                }
             }
-            else if (x2.GetType() == typeof(EllipseF))
+            else
             {
-                return Colision( new EllipseF(x2.centr.x, x2.centr.y, x2._side), new PoligonF(x1.centr.x, x1.centr.y, x1.GivePoligon()));
+                Debug.Fail($"x1 is {x1}, x1.GetType={x1?.GetType()}");
+                return false;
             }
-            else// if (x1.GetType() == typeof(PoligonF) && x2.GetType() == typeof(PoligonF))
-            {
-                //если фігура1 - полигон
-                //если фігура2 - полигон
-                return Colision(new PoligonF(x1.centr.x, x1.centr.y, x1.GivePoligon()), new PoligonF(x2.centr.x, x2.centr.y, x2.GivePoligon()));
-            }
-            return false;
         }
     }
 }
