@@ -273,6 +273,14 @@ namespace NG_V0._0._0
             {
                 return new Vector(x.x + y.x, x.y + y.y);
             }
+            public static Vector operator - (Vector x, Vector y)
+            {
+                return new Vector(x.x - y.x, x.y - y.y);
+            }
+            /*public static Vector operator +(Vector x, Vector y)
+            {
+                return new Vector(x.x + y.x, x.y + y.y);
+            }*/
         }
 
         public static bool Collide(PoligonF x1, PoligonF x2)
@@ -343,12 +351,13 @@ namespace NG_V0._0._0
             List<Figure> x = new List<Figure>() { x1, x2 };
             bool XBigest = x1.centr.x > x2.centr.x;
             bool YBigest = x1.centr.y > x2.centr.y;
-            bool colx = false, coly = false;
+            //bool colx = false, coly = false;
 
-            colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side/2 - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side/2 <= 0;
-            coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side/2 - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side/2 <= 0;
+            //colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side/2 - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side/2 <= 0;
+            //coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side/2 - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side/2 <= 0;
+            //return colx && coly;
+            return Math.Sqrt((x1.centr - x2.centr).x)+ Math.Sqrt((x1.centr - x2.centr).x) < Math.Sqrt(x1._side + x2._side);
 
-            return colx && coly;
 
         }
 
