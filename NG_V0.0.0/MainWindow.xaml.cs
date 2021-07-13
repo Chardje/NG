@@ -37,7 +37,7 @@ namespace NG_V0._0._0
             DispatcherTimer timer = new DispatcherTimer();
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = new TimeSpan(0, 0, 0, 0, 20);
-            timer.Start();
+           // timer.Start();
             #endregion
 
             #region set timer1
@@ -61,6 +61,8 @@ namespace NG_V0._0._0
             }
 
             timer1_Tick(null, null);
+            Window1 window1 = new Window1();
+            window1.Show();
         }
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -90,14 +92,14 @@ namespace NG_V0._0._0
             for (int i = 0; i<figures.Count;i++)
             {
                 figures[i].rotatemove = R.Next(-30, 30);
-                figures[i].vectormove = new Vector(R.Next(-5, 5), R.Next(-5, 5));
+                figures[i].vectormove = new Vectore(R.Next(-5, 5), R.Next(-5, 5));
             }
         }
 
         public abstract class Figure
         {
-            public Vector centr;
-            public Vector vectormove;
+            public Vectore centr;
+            public Vectore vectormove;
             public int rotatemove;
             private byte border;
             public int _side;
@@ -106,12 +108,12 @@ namespace NG_V0._0._0
 
             public Figure(int x, int y)
             {
-                centr = new Vector(x, y);
-                vectormove = new Vector(0,0);
+                centr = new Vectore(x, y);
+                vectormove = new Vectore(0,0);
                 border = miror;
             }
             public abstract void Rotate(int angle);
-            public abstract void Move(Vector move);
+            public abstract void Move(Vectore move);
             public void ReactBorder()
             {
                 switch (border)
@@ -171,7 +173,7 @@ namespace NG_V0._0._0
 
             public override Shape Shape => _figura;
 
-            public override void Move(Vector move)
+            public override void Move(Vectore move)
             {
                 centr += move;
                 ReactBorder();
@@ -216,7 +218,7 @@ namespace NG_V0._0._0
 
             }
 
-            public override void Move(Vector move)
+            public override void Move(Vectore move)
             {
                 for (int i = 0; i < _figura.Points.Count; i++)
                 {
@@ -261,21 +263,21 @@ namespace NG_V0._0._0
             }
         }
 
-        public class Vector
+        public class Vectore
         {
             public int x, y;
-            public Vector(int x,int y)
+            public Vectore(int x,int y)
             {
                 this.x = x;
                 this.y = y;
             }
-            public static Vector operator + (Vector x, Vector y)
+            public static Vectore operator + (Vectore x, Vectore y)
             {
-                return new Vector(x.x + y.x, x.y + y.y);
+                return new Vectore(x.x + y.x, x.y + y.y);
             }
-            public static Vector operator - (Vector x, Vector y)
+            public static Vectore operator - (Vectore x, Vectore y)
             {
-                return new Vector(x.x - y.x, x.y - y.y);
+                return new Vectore(x.x - y.x, x.y - y.y);
             }
             /*public static Vector operator +(Vector x, Vector y)
             {
