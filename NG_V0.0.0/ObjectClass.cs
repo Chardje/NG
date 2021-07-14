@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Text;
+using System.Windows.Media.Imaging;
+using System.Windows;
 
 namespace NG_V0._0._0
 {
@@ -68,14 +70,27 @@ namespace NG_V0._0._0
         }
         public void RenderTo(Window1 window)
         {
-            
-            for (int h=0;h<window.NGGrid.Height;h++)
+            int width = (int)window.BackgroundImage.Width;
+            int height = (int)window.BackgroundImage.Height;
+            WriteableBitmap writeableBitmap;
+            if (window.BackgroundImage.Source is WriteableBitmap wb)
             {
-                for (int w = 0; w < window.NGGrid.Width; w++)
-                {
-                    window.rectangles[h][w].Fill = new SolidColorBrush(Color.FromRgb((byte)window.R.Next(0, 255), (byte)window.R.Next(0, 255), (byte)window.R.Next(255)));
-                }
+                writeableBitmap = wb;
             }
+            else
+            {
+                writeableBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
+                window.BackgroundImage.Source = writeableBitmap;
+            }
+            byte[] array = new byte[width * height * 4];
+            for (int i = 0; i < array.Length / 4; i += 1)
+            {
+                array[4 * i + 0] = (byte)window.R.Next(0, 256);
+                array[4 * i + 1] = (byte)window.R.Next(0, 256);
+                array[4 * i + 2] = (byte)window.R.Next(0, 256);
+                array[4 * i + 3] = 255;
+            }
+            writeableBitmap.WritePixels(new Int32Rect(0, 0, width, height), array, 4 * width, 0);
         }
     }
 }
