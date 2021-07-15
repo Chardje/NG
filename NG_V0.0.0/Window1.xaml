@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
     <Grid x:Name="NGGrid" >
-        
-        
+        <Image x:Name="BackgroundImage" Height="450" VerticalAlignment="Top" HorizontalAlignment="Left" Width="800"/>
+
+
     </Grid>
 </Window>
