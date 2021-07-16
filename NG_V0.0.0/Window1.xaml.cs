@@ -21,7 +21,9 @@ namespace NG_V0._0._0
     public partial class Window1 : Window
     {
         public Random R = new Random();
-        Camera camera = new Camera(new Vector(0,0,0), new Vector(0, 0,0));
+        Camera camera = new Camera(new Vector(0,0,0), new Vector(1, 0,0));
+        List<Object> objects = new List<Object>();
+        
         public Window1()
         {
             InitializeComponent();
@@ -31,6 +33,7 @@ namespace NG_V0._0._0
             timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
             timer.Start();
             #endregion
+            objects.Add(new Sphere(new Vector(50,0,0),30));
         }
         private void timer_Tick(object sender, EventArgs e)
         {

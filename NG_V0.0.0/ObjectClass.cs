@@ -11,32 +11,33 @@ using System.Windows;
 
 namespace NG_V0._0._0
 {
-    class Object
+    public abstract class Object
     {
-        Vector center;
-        Vector vel;
-        Vector spin;
-        long mass;
-        int Radius;
-        List<Object> constituents;
-        internal Object()
+        internal Vector center;
+        internal Vector vel;
+        internal Vector spin;
+        internal long mass;
+        internal List<Object> constituents;
+        internal Object(Vector center)
         {
-
+            this.center = center;
         }
-        bool CollidesWith(Object b)
+        
+    }
+    public class Sphere : Object
+    {
+        int Radius;
+        public Sphere(Vector center,int Radius):base(center)
+        {
+            this.Radius = Radius;
+        }
+        bool CollidesWith(Sphere b)
         {
             return Math.Sqrt((center - b.center).x) + Math.Sqrt((center - b.center).y) + Math.Sqrt((center - b.center).z) <= Math.Sqrt(Radius + b.Radius);
         }
     }
-    class Atom : Object
-    {
-        Atom():base()
-        {
-
-        }
-    }
     
-    class Vector
+    public class Vector
     {
         public long x;
         public long y;
