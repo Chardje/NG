@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using M = System.Math;
+
 
 namespace NG_V0._0._0
 {
@@ -63,6 +65,7 @@ namespace NG_V0._0._0
             timer1_Tick(null, null);
             Window1 window1 = new Window1();
             window1.Show();
+            this.Close();
         }
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -207,8 +210,8 @@ namespace NG_V0._0._0
             {
                 double x;
                 double y;
-                double sin = Math.Sin(angle * Math.PI / 180);
-                double cos = Math.Cos(angle * Math.PI / 180);
+                double sin = M.Sin(angle * M.PI / 180);
+                double cos = M.Cos(angle * M.PI / 180);
                 for (int i = 0; i < _figura.Points.Count; i++)
                 {
                     x = (_figura.Points[i].X - centr.x) * cos - ((_figura.Points[i].Y - centr.y) * sin);
@@ -358,7 +361,7 @@ namespace NG_V0._0._0
             //colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side/2 - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side/2 <= 0;
             //coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side/2 - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side/2 <= 0;
             //return colx && coly;
-            return Math.Sqrt((x1.centr - x2.centr).x)+ Math.Sqrt((x1.centr - x2.centr).x) < Math.Sqrt(x1._side + x2._side);
+            return M.Sqrt((x1.centr - x2.centr).x)+ M.Sqrt((x1.centr - x2.centr).x) < M.Sqrt(x1._side + x2._side);
 
 
         }

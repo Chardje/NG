@@ -69,12 +69,31 @@ namespace NG_V0._0._0
                 window.BackgroundImage.Source = writeableBitmap;
             }
             byte[] array = new byte[width * height * 4];
-            for (int i = 0; i < array.Length / 4; i += 1)
+            for (int h = 0; h < height; h++) 
             {
-                array[4 * i + 0] = (byte)window.R.Next(0, 256);
-                array[4 * i + 1] = (byte)window.R.Next(0, 256);
-                array[4 * i + 2] = (byte)window.R.Next(0, 256);
-                array[4 * i + 3] = 255;
+                for (int w = 0; w < width; w++) 
+                {
+                    Ray ray = new Ray(position, new Vector(direction.x + w - width / 2, direction.y + h - height / 2, direction.z));
+                    {
+                        array[4 * (h * width + w) + 0] = 0;
+                        array[4 * (h * width + w) + 1] = 0;
+                        array[4 * (h * width + w) + 2] = 0;
+                        array[4 * (h * width + w) + 3] = 255;
+                    }
+                    double t = double.PositiveInfinity;
+                    for (int i = 0; i < window.objects.Count; i++) 
+                    {
+                        if (window.objects[i].ObjectInter(ray,out double t0, out double t1) && (t1>0||t0>0) && t > t0)
+                        {    
+                            t = t0;                            
+                            double k = 1d / (t0 + 1d);
+                            array[4 * (h * width + w) + 0] = (byte)(((int)(255 * k))%2 * 255);
+                            array[4 * (h * width + w) + 1] = (byte)(((int)(255 * k)) % 2 * 191); ;
+                            array[4 * (h * width + w) + 2] = (byte)(((int)(255 * k)) % 2 * 0); ;
+                            array[4 * (h * width + w) + 3] = 255;
+                        }
+                    }
+                }
             }
             writeableBitmap.WritePixels(new Int32Rect(0, 0, width, height), array, 4 * width, 0);
         }

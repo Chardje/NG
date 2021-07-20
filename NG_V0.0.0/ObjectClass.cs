@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using NG_V0._0._0.Math;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows;
+using M = System.Math;
+
 
 namespace NG_V0._0._0
 {
@@ -18,7 +21,7 @@ namespace NG_V0._0._0
             this.center = center;
         }
 
-        internal abstract bool ObjectInter(Ray ray);
+        internal abstract bool ObjectInter(Ray ray, out double t0, out double t1);
     }
     internal class Sphere : Object
     {
@@ -28,21 +31,28 @@ namespace NG_V0._0._0
             this.Radius = Radius;
         }
 
-        internal override bool ObjectInter(Ray ray)
+        internal override bool ObjectInter(Ray ray,out double t0, out double t1)
         {
-            int x0 = (int)center.x;
-            int y0 = (int)center.x;
-            int z0 = (int)center.x;
+            double x0 = center.x;
+            double y0 = center.y;
+            double z0 = center.z;
+            double x1 = ray.Origin.x;
+            double y1 = ray.Origin.y;
+            double z1 = ray.Origin.z;
+            double x2_x1 = ray.Direction.x;
+            double y2_y1 = ray.Direction.y;
+            double z2_z1 = ray.Direction.z;
 
-            for (int i=0;i<500;i++)
-            {
-            }
-            return false;
+            return Math.SquareEquation.Solve(
+                M.Pow(x2_x1, 2) + M.Pow(y2_y1, 2) + M.Pow(z2_z1, 2),
+                2 * (x2_x1 * (x1 - x0) + y2_y1 * (y1 - y0) + z2_z1 * (z1 - z0)),
+                M.Pow(x1 - x0, 2) + M.Pow(y1 - y0, 2) + M.Pow(z1 - z0, 2) - M.Pow(Radius, 2),
+                out t0, out t1) ; ;
         }
 
         bool CollidesWith(Sphere b)
         {
-            return Math.Sqrt((center - b.center).x) + Math.Sqrt((center - b.center).y) + Math.Sqrt((center - b.center).z) <= Math.Sqrt(Radius + b.Radius);
+            return M.Sqrt((center - b.center).x) + M.Sqrt((center - b.center).y) + M.Sqrt((center - b.center).z) <= M.Sqrt(Radius + b.Radius);
         }
     }
 }
