@@ -65,4 +65,30 @@ namespace NG_V0._0._0
             return M.Sqrt((center - b.center).X) + M.Sqrt((center - b.center).Y) + M.Sqrt((center - b.center).Z) <= M.Sqrt(Radius + b.Radius);
         }
     }
+    class Electron : Sphere
+    {
+        Electron(Vector C):base(C,1)
+        {
+            mass = 1;
+            color = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
+
+        }
+    }
+    class Proton : Sphere
+    {
+        Proton(Vector C) : base(C, 45)
+        {
+            mass = 45;
+            color = new SolidColorBrush(Color.FromArgb(255,255,0,0));
+        }
+    }
+    class Neitron : Sphere
+    {
+        Neitron(Vector C) : base(C, 45)
+        {
+            mass = 45;
+            color = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0));
+
+        }
+    }
 }

@@ -84,7 +84,6 @@ namespace NG_V0._0._0
     {
         public Vector position;
         public Vector direction;
-        public int depth;
 
         public Camera(Vector P, Vector D)
         {
