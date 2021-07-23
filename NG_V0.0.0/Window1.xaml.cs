@@ -33,11 +33,15 @@ namespace NG_V0._0._0
             timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
             timer.Start();
             #endregion
-            objects.Add(new Sphere(new Vector(0, 0, 200), 100));
-            objects.Add(new Sphere(new Vector(600, 0, 1000), 50));
-            objects.Add(new Sphere(new Vector(0, 150, 1600), 20));
-            objects.Add(new Sphere(new Vector(150, 150, 1600), 20));
-            objects.Add(new Sphere(new Vector(-150, -150, 750), 20));
+            objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 63, G = 127, B = 255, }, 100));
+            objects.Add(new Sphere(new Vector(600, 0, 1000), new Color { R = 127, G = 63, B = 255, }, 50));
+            objects.Add(new Sphere(new Vector(0, 150, 1600), new Color { R = 255, G = 127, B = 63, }, 50));
+            objects.Add(new Sphere(new Vector(0, -50, 500), new Color { R = 63, G = 255, B = 127, }, 20));
+            objects.Add(new Sphere(new Vector(-150, -150, 750), new Color { R = 127, G = 255, B = 63, }, 20));
+            objects.Add(new Sphere(new Vector(150, -150, 1600), new Color { R = 255, G = 63, B = 127, }, 20));
+
+            objects.Add(new Sphere(new Vector(-400, -60, 900), new Color { R = 255, G = 0, B = 0, }, 100));
+            objects.Add(new Sphere(new Vector(-400,  60, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
         }
         private void timer_Tick(object sender, EventArgs e)
         {

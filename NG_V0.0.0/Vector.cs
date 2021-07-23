@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -6,22 +7,58 @@ namespace NG_V0._0._0
 {
     public class Vector
     {
-        public double x;
-        public double y;
-        public double z;
+        public double X { get; }
+        public double Y { get; }
+        public double Z { get; }
         public Vector(double x, double y, double z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
         public static Vector operator + (Vector v1, Vector v2)
         {
-            return new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+            return new Vector(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
         }
         public static Vector operator -(Vector v1, Vector v2)
         {
-            return new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+            return new Vector(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+        }
+        public static Vector operator *(double s, Vector v)
+        {
+            return new Vector(s * v.X, s * v.Y, s * v.Z);
+        }
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y, -v.Z);
+        }
+
+        /// <summary>
+        /// Length of the vector
+        /// </summary>
+        public double Length => System.Math.Sqrt(this * this);
+
+        /// <summary>
+        /// Normalized vector, collinear to the current
+        /// </summary>
+        public Vector Norm
+        {
+            get
+            {
+                double l = Length;
+                return new Vector(X / l, Y / l, Z / l);
+            }
+        }
+
+        /// <summary>
+        /// Scalar Product
+        /// </summary>
+        /// <param name="v1">1st vector</param>
+        /// <param name="v2">2nd vector</param>
+        /// <returns>Scalar Product</returns>
+        public static double operator * (Vector v1, Vector v2)
+        {
+            return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
     }
 
@@ -72,24 +109,29 @@ namespace NG_V0._0._0
             {
                 for (int w = 0; w < width; w++) 
                 {
-                    Ray ray = new Ray(position, new Vector(direction.x + w - width / 2, direction.y + h - height / 2, direction.z));
+                    Ray ray = new Ray(position, new Vector(direction.X + w - width / 2, direction.Y + h - height / 2, direction.Z));
                     {
-                        array[4 * (h * width + w) + 0] = 0;
-                        array[4 * (h * width + w) + 1] = 0;
-                        array[4 * (h * width + w) + 2] = 0;
-                        array[4 * (h * width + w) + 3] = 255;
+                        int baseindex = 4 * (h * width + w);
+                        array[baseindex + 0] = 0;
+                        array[baseindex + 1] = 0;
+                        array[baseindex + 2] = 0;
+                        array[baseindex + 3] = 255;
                     }
                     double t = double.PositiveInfinity;
                     for (int i = 0; i < window.objects.Count; i++) 
                     {
-                        if (window.objects[i].ObjectInter(ray,out double t0, out double t1) && (t1>0||t0>0) && t > t0)
-                        {    
-                            t = t0;                            
-                            double k = 1d / (t0 + 1d);
-                            array[4 * (h * width + w) + 0] = (byte)(((int)(255 * k))%2 * 255);
-                            array[4 * (h * width + w) + 1] = (byte)(((int)(255 * k)) % 2 * 191); ;
-                            array[4 * (h * width + w) + 2] = (byte)(((int)(255 * k)) % 2 * 0); ;
-                            array[4 * (h * width + w) + 3] = 255;
+                        Object obj = window.objects[i];
+                        if (obj.ObjectInter(ray, out double t0, out double _) && t0 > 0.1 && t > t0)
+                        {
+                            t = t0;
+                            Vector sphereNorm = (t0 * ray.Direction - obj.center).Norm;
+                            double product = System.Math.Clamp(-(sphereNorm * ray.Direction.Norm), 0, 1);
+                            Debug.Assert(product >= 0 && product <= 1, $"product = {product}");
+                            double k = product;
+                            int baseindex = 4 * (h * width + w);
+                            array[baseindex + 0] = (byte)(obj.color.B * k);
+                            array[baseindex + 1] = (byte)(obj.color.G * k);
+                            array[baseindex + 2] = (byte)(obj.color.R * k);
                         }
                     }
                 }
