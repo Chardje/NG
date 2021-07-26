@@ -13,7 +13,7 @@ using System.Diagnostics;
 using System.Windows.Threading;
 
 
-namespace NG_V0._0._0
+namespace NG
 {
     /// <summary>
     /// Interaction logic for Window1.xaml

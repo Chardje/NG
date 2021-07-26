@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace NG_V0._0._0Tests
+namespace NG.Tests
 {
     // https://www.meziantou.net/mstest-v2-customize-test-execution.htm
 

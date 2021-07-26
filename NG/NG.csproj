@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>NG_V0._0._0</RootNamespace>
+    <RootNamespace>NG</RootNamespace>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 

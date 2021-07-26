@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace NG_V0._0._0
+namespace NG
 {
     public class Vector
     {

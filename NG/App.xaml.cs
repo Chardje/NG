@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace NG_V0._0._0
+namespace NG
 {
     /// <summary>
     /// Interaction logic for App.xaml

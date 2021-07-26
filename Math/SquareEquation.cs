@@ -1,7 +1,7 @@
 ﻿using System;
 using M = System.Math;
 
-namespace NG_V0._0._0.Math
+namespace NG.Math
 {
     public static class SquareEquation
     {

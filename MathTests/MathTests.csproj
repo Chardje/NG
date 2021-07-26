@@ -4,6 +4,8 @@
     <TargetFramework>.NETCoreApp,Version=v3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <RootNamespace>NG.Math.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

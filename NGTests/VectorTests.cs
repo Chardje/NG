@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NG_V0._0._0;
+using NG;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NG_V0._0._0.Tests
+namespace NG.Tests
 {
     [TestClass()]
     public class VectorTests

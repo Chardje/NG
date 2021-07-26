@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>NG_V0._0._0.Math</RootNamespace>
+    <RootNamespace>NG.Math</RootNamespace>
   </PropertyGroup>
 
 </Project>

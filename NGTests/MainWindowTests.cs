@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NG_V0._0._0;
-using NG_V0._0._0Tests;
+using NG;
+using NG.Tests;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static NG_V0._0._0.MainWindow;
+using static NG.MainWindow;
 
-namespace NG_V0._0._0.Tests
+namespace NG.Tests
 {
     [STATestClass]
     public class MainWindowTests

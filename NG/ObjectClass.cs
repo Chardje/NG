@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using NG_V0._0._0.Math;
+using NG.Math;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows;
 using M = System.Math;
 
 
-namespace NG_V0._0._0
+namespace NG
 {
     internal abstract class Object
     {

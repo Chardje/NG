@@ -3,12 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NG_V0.0.0", "NG_V0.0.0\NG_V0.0.0.csproj", "{EB0620E4-C6D6-4ECE-955D-33A04110B769}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NG", "NG\NG.csproj", "{EB0620E4-C6D6-4ECE-955D-33A04110B769}"
 	ProjectSection(ProjectDependencies) = postProject
 		{85438B6F-ABC4-4625-B545-3327127A440D} = {85438B6F-ABC4-4625-B545-3327127A440D}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NG_V0.0.0Tests", "NG_V0.0.0Tests\NG_V0.0.0Tests.csproj", "{4E4C0270-B2CB-460B-B931-522B634555A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NGTests", "NGTests\NGTests.csproj", "{4E4C0270-B2CB-460B-B931-522B634555A8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Math", "Math\Math.csproj", "{85438B6F-ABC4-4625-B545-3327127A440D}"
 EndProject
