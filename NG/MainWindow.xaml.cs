@@ -361,9 +361,13 @@ namespace NG
             //colx = x[XBigest ? 0 : 1].centr.x - x[XBigest ? 0 : 1]._side/2 - x[!XBigest ? 0 : 1].centr.x - x[!XBigest ? 0 : 1]._side/2 <= 0;
             //coly = x[YBigest ? 0 : 1].centr.y - x[YBigest ? 0 : 1]._side/2 - x[!YBigest ? 0 : 1].centr.y - x[!YBigest ? 0 : 1]._side/2 <= 0;
             //return colx && coly;
-            return M.Sqrt((x1.centr - x2.centr).x)+ M.Sqrt((x1.centr - x2.centr).x) < M.Sqrt(x1._side + x2._side);
+            return Sqr((x1.centr - x2.centr).x) + Sqr((x1.centr - x2.centr).x) <= Sqr(x1._side + x2._side);
 
 
+        }
+        static double Sqr(double d)
+        {
+            return d * d;
         }
 
         public static bool Collide(Figure x1, Figure x2)
