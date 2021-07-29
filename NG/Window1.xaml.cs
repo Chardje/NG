@@ -33,7 +33,7 @@ namespace NG
             timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
             timer.Start();
             #endregion
-            objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 63, G = 127, B = 255, }, 100));
+            /*objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 63, G = 127, B = 255, }, 100));
             objects.Add(new Sphere(new Vector(600, 0, 1000), new Color { R = 127, G = 63, B = 255, }, 50));
             objects.Add(new Sphere(new Vector(0, 150, 1600), new Color { R = 255, G = 127, B = 63, }, 50));
             objects.Add(new Sphere(new Vector(0, -50, 500), new Color { R = 63, G = 255, B = 127, }, 20));
@@ -41,7 +41,8 @@ namespace NG
             objects.Add(new Sphere(new Vector(150, -150, 1600), new Color { R = 255, G = 63, B = 127, }, 20));
 
             objects.Add(new Sphere(new Vector(-400, -60, 900), new Color { R = 255, G = 0, B = 0, }, 100));
-            objects.Add(new Sphere(new Vector(-400,  60, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-400,  60, 1000), new Color { R = 0, G = 255, B = 0, }, 160));*/
+            objects = new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(objects, new Vector(400, 200, 1500), new Vector(-400, -200, 500), 0.1);
         }
         private void timer_Tick(object sender, EventArgs e)
         {

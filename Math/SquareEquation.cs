@@ -3,6 +3,7 @@ using M = System.Math;
 
 namespace NG.Math
 {
+    
     public static class SquareEquation
     {
         public static bool Solve(double a, double b, double c, out double x0, out double x1)
