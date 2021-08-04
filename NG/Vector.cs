@@ -27,7 +27,7 @@ namespace NG
         public static Vector operator *(double s, Vector v)
         {
             return new Vector(s * v.X, s * v.Y, s * v.Z);
-        }
+        }        
         public static Vector operator -(Vector v)
         {
             return new Vector(-v.X, -v.Y, -v.Z);
@@ -107,10 +107,10 @@ namespace NG
             byte[] array = new byte[width * height * 4];
             for (int h = 0; h < height; h++) 
             {
-                for (int w = 0; w < width; w++) 
+                for (int w = 0; w < width; w++)
                 {
                     Ray ray = new Ray(position, new Vector(direction.X + w - width / 2, direction.Y + h - height / 2, direction.Z));
-                    {
+                    { 
                         int baseindex = 4 * (h * width + w);
                         array[baseindex + 0] = 0;
                         array[baseindex + 1] = 0;
