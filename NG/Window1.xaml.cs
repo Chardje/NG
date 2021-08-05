@@ -23,6 +23,7 @@ namespace NG
         public Random R = new Random();
         Camera camera = new Camera(new Vector(0,0,0), new Vector(0, 0, 500));
         internal List<Object> objects = new List<Object>();
+        private readonly Stopwatch renderingStopWatch = new Stopwatch();
         
         public Window1()
         {
@@ -46,7 +47,10 @@ namespace NG
         }
         private void timer_Tick(object sender, EventArgs e)
         {
+            renderingStopWatch.Restart();
             camera.RenderTo(this);
+            renderingStopWatch.Stop();
+            Debug.WriteLine($"Rendering: {renderingStopWatch.Elapsed}");
         }
     }
 }
