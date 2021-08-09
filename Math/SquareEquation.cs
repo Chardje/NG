@@ -1,11 +1,14 @@
 ﻿using System;
 using M = System.Math;
+using System.Diagnostics;
+
 
 namespace NG.Math
 {
     
     public static class SquareEquation
     {
+
         public static bool Solve(double a, double b, double c, out double x0, out double x1)
         {
             double D = b * b - (4 * a * c);
@@ -17,8 +20,10 @@ namespace NG.Math
             }
             else if (D >= 0)
             {
-                x0 = (-b - M.Sqrt(D)) / (2 * a);
-                x1 = (-b + M.Sqrt(D)) / (2 * a);
+                double T = M.Sqrt(D);
+                double a2 = (1 / a) / 2;
+                x0 = (-b - T) * a2;
+                x1 = (-b + T) * a2;
             }
             else
             {

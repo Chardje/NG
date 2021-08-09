@@ -118,21 +118,26 @@ namespace NG
                         array[baseindex + 3] = 255;
                     }
                     double t = double.PositiveInfinity;
+                    Object best = null;
                     for (int i = 0; i < window.objects.Count; i++) 
                     {
                         Object obj = window.objects[i];
                         if (obj.ObjectInter(ray, out double t0, out double _) && t0 > 0.1 && t > t0)
                         {
-                            t = t0;
-                            Vector sphereNorm = (t0 * ray.Direction - obj.center).Norm;
-                            double product = System.Math.Clamp(-(sphereNorm * ray.Direction.Norm), 0, 1);
-                            Debug.Assert(product >= 0 && product <= 1, $"product = {product}");
-                            double k = product;
-                            int baseindex = 4 * (h * width + w);
-                            array[baseindex + 0] = (byte)(obj.color.B * k);
-                            array[baseindex + 1] = (byte)(obj.color.G * k);
-                            array[baseindex + 2] = (byte)(obj.color.R * k);
+                            best = obj;
+                            t = t0;                            
                         }
+                    }
+                    if (best != null)
+                    {
+                        Vector sphereNorm = (t * ray.Direction - best.center).Norm;
+                        double product = System.Math.Clamp(-(sphereNorm * ray.Direction.Norm), 0, 1);
+                        Debug.Assert(product >= 0 && product <= 1, $"product = {product}");
+                        double k = product;
+                        int baseindex = 4 * (h * width + w);
+                        array[baseindex + 0] = (byte)(best.color.B * k);
+                        array[baseindex + 1] = (byte)(best.color.G * k);
+                        array[baseindex + 2] = (byte)(best.color.R * k);
                     }
                 }
             }

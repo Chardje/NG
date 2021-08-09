@@ -62,25 +62,6 @@ namespace NG
 
         internal override bool ObjectInter(Ray ray,out double t0, out double t1)
         {
-            /*
-             double x0 = center.X;
-             double y0 = center.Y;
-             double z0 = center.Z;
-
-             double x1 = ray.Origin.X;
-             double y1 = ray.Origin.Y;
-             double z1 = ray.Origin.Z;
-
-             double x2_x1 = ray.Direction.X;
-             double y2_y1 = ray.Direction.Y;
-             double z2_z1 = ray.Direction.Z;
-
-             return Math.SquareEquation.Solve(
-                 M.Pow(x2_x1, 2) + M.Pow(y2_y1, 2) + M.Pow(z2_z1, 2),
-                 2 * (x2_x1 * (x1 - x0) + y2_y1 * (y1 - y0) + z2_z1 * (z1 - z0)),
-                 M.Pow(x1 - x0, 2) + M.Pow(y1 - y0, 2) + M.Pow(z1 - z0, 2) - M.Pow(Radius, 2),
-                 out t0, out t1) ; */
-
             Vector s = center - ray.Origin;
             Vector d = ray.Direction;
             return Math.SquareEquation.Solve(

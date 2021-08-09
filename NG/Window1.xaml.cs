@@ -24,6 +24,9 @@ namespace NG
         Camera camera = new Camera(new Vector(0,0,0), new Vector(0, 0, 500));
         internal List<Object> objects = new List<Object>();
         private readonly Stopwatch renderingStopWatch = new Stopwatch();
+
+        private TimeSpan totalRenderingTime = new TimeSpan();
+        private int totalCount = 0;
         
         public Window1()
         {
@@ -31,7 +34,7 @@ namespace NG
             #region set timer
             DispatcherTimer timer = new DispatcherTimer();
             timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 250);
             timer.Start();
             #endregion
             /*objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 63, G = 127, B = 255, }, 100));
@@ -43,14 +46,36 @@ namespace NG
 
             objects.Add(new Sphere(new Vector(-400, -60, 900), new Color { R = 255, G = 0, B = 0, }, 100));
             objects.Add(new Sphere(new Vector(-400,  60, 1000), new Color { R = 0, G = 255, B = 0, }, 160));*/
-            objects = new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(objects, new Vector(400, 200, 1500), new Vector(-400, -200, 500), 0.1);
+            //objects = new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(objects, new Vector(400, 200, 1500), new Vector(-400, -200, 500), 0.3);
+
+            objects.Add(new Sphere(new Vector(400, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(200, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(0, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-200, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-400, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+
+            objects.Add(new Sphere(new Vector(400, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(200, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-200, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-400, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+
+            objects.Add(new Sphere(new Vector(400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(0, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+
         }
         private void timer_Tick(object sender, EventArgs e)
         {
             renderingStopWatch.Restart();
             camera.RenderTo(this);
             renderingStopWatch.Stop();
-            Debug.WriteLine($"Rendering: {renderingStopWatch.Elapsed}");
+            totalRenderingTime += renderingStopWatch.Elapsed;
+            totalCount += 1;
+            Debug.WriteLine($"Rendering: {renderingStopWatch.Elapsed} {totalCount} {totalRenderingTime/totalCount}");
         }
+
     }
 }
