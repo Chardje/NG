@@ -7,8 +7,13 @@
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
     <Grid x:Name="NGGrid" >
-        <Image x:Name="BackgroundImage" Height="450" VerticalAlignment="Top" HorizontalAlignment="Left" Width="800"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Image x:Name="BackgroundImage" Height="450" VerticalAlignment="Top" HorizontalAlignment="Center" Width="800"/>
+        <Grid x:Name="DebugMenu" Visibility="Visible">
+            <Label x:Name="FPS" Content="FPS:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FFE82121" Background="{x:Null}"/>
 
-
+        </Grid>
     </Grid>
 </Window>

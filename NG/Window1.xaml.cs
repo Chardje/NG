@@ -67,15 +67,21 @@ namespace NG
             objects.Add(new Sphere(new Vector(-400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
 
         }
+
+        private void RenewDebugMenu(ushort fps)
+        {
+            FPS.Content = "FPS: " + fps;
+        }
+
         private void timer_Tick(object sender, EventArgs e)
         {
             renderingStopWatch.Restart();
             camera.RenderTo(this);
             renderingStopWatch.Stop();
+          //RenewDebugMenu(Convert.ToUInt16(1 / renderingStopWatch.Elapsed.TotalSeconds));
             totalRenderingTime += renderingStopWatch.Elapsed;
             totalCount += 1;
             Debug.WriteLine($"Rendering: {renderingStopWatch.Elapsed} {totalCount} {totalRenderingTime/totalCount}");
         }
-
     }
 }

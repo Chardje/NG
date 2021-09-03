@@ -122,10 +122,13 @@ namespace NG
                     for (int i = 0; i < window.objects.Count; i++) 
                     {
                         Object obj = window.objects[i];
-                        if (obj.ObjectInter(ray, out double t0, out double _) && t0 > 0.1 && t > t0)
+                        if ((obj.center - position) * direction > 1)
                         {
-                            best = obj;
-                            t = t0;                            
+                            if (obj.ObjectInter(ray, out double t0, out double _) && t0 > 0.1 && t > t0)
+                            {
+                                best = obj;
+                                t = t0;
+                            }
                         }
                     }
                     if (best != null)
