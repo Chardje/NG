@@ -46,9 +46,9 @@ namespace NG
 
             objects.Add(new Sphere(new Vector(-400, -60, 900), new Color { R = 255, G = 0, B = 0, }, 100));
             objects.Add(new Sphere(new Vector(-400,  60, 1000), new Color { R = 0, G = 255, B = 0, }, 160));*/
-            //objects = new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(objects, new Vector(400, 200, 1500), new Vector(-400, -200, 500), 0.3);
+            objects = new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(objects, new Vector(450, 200, 3500), new Vector(-450, -200, 500), 0.3);
 
-            objects.Add(new Sphere(new Vector(400, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            /*objects.Add(new Sphere(new Vector(400, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
             objects.Add(new Sphere(new Vector(200, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
             objects.Add(new Sphere(new Vector(0, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
             objects.Add(new Sphere(new Vector(-200, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
@@ -64,13 +64,14 @@ namespace NG
             objects.Add(new Sphere(new Vector(200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
             objects.Add(new Sphere(new Vector(0, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
             objects.Add(new Sphere(new Vector(-200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(-400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));*/
 
         }
 
-        private void RenewDebugMenu(ushort fps)
+        private void RenewDebugMenu(float fps)
         {
             FPS.Content = "FPS: " + fps;
+            NofObj.Content = "NofObj: " + objects.Count;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -78,7 +79,7 @@ namespace NG
             renderingStopWatch.Restart();
             camera.RenderTo(this);
             renderingStopWatch.Stop();
-          //RenewDebugMenu(Convert.ToUInt16(1 / renderingStopWatch.Elapsed.TotalSeconds));
+            RenewDebugMenu((float) (1 / renderingStopWatch.Elapsed.TotalSeconds));
             totalRenderingTime += renderingStopWatch.Elapsed;
             totalCount += 1;
             Debug.WriteLine($"Rendering: {renderingStopWatch.Elapsed} {totalCount} {totalRenderingTime/totalCount}");
