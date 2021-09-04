@@ -5,12 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NG"
         mc:Ignorable="d"
-        Title="GN" Height="490" Width="817" RenderTransformOrigin="0.5,0.5">
-
-    <Grid x:Name="NGGrid" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" Width="800" Height="450">
+        Title="Window1" Height="450" Width="800">
+    <Grid x:Name="NGGrid" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Rectangle  Width="800" Height="450" Margin="0,0" Stroke="Red" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image x:Name="BackgroundImage" Height="450" VerticalAlignment="Top" HorizontalAlignment="Center" Width="800"/>
+        <Grid x:Name="DebugMenu" Visibility="Visible">
+            <Label x:Name="FPS" Content="FPS:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FFE82121" Background="{x:Null}"/>
+            <Label x:Name="NofObj" Content="NofObj:" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Foreground="#FFE82121" Background="{x:Null}"/>
+
+        </Grid>
     </Grid>
 </Window>
+

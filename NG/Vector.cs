@@ -90,7 +90,7 @@ namespace NG
             position = P;
             direction = D;
         }
-        public void RenderTo(Window1 window)
+        public void RenderTo(MainWindow window)
         {
             int width = (int)window.BackgroundImage.Width;
             int height = (int)window.BackgroundImage.Height;
@@ -122,7 +122,8 @@ namespace NG
                     for (int i = 0; i < window.objects.Count; i++) 
                     {
                         Object obj = window.objects[i];
-                        if ((obj.center - position) * direction > 1)
+                        Vector z = obj.center - position;
+                        //if (z * direction > 0.9 * direction.Length * z.Length)
                         {
                             if (obj.ObjectInter(ray, out double t0, out double _) && t0 > 0.1 && t > t0)
                             {
