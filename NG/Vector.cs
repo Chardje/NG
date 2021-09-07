@@ -105,6 +105,7 @@ namespace NG
                 window.BackgroundImage.Source = writeableBitmap;
             }
             byte[] array = new byte[width * height * 4];
+            //iterate over all pixels and vectors
             for (int h = 0; h < height; h++) 
             {
                 for (int w = 0; w < width; w++)
@@ -126,7 +127,7 @@ namespace NG
                         //if (z * direction > 0.9 * direction.Length * z.Length)
                         {
                             if (obj.ObjectInter(ray, out double t0, out double _) && t0 > 0.1 && t > t0)
-                            {
+                            {//select the object that is closest to the camera
                                 best = obj;
                                 t = t0;
                             }
@@ -134,6 +135,7 @@ namespace NG
                     }
                     if (best != null)
                     {
+                        //paint over a pixel depending on the pixel normal
                         Vector sphereNorm = (t * ray.Direction - best.center).Norm;
                         double product = System.Math.Clamp(-(sphereNorm * ray.Direction.Norm), 0, 1);
                         Debug.Assert(product >= 0 && product <= 1, $"product = {product}");

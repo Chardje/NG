@@ -59,7 +59,13 @@ namespace NG
             V = 4 / 3 * M.PI * Radius * Radius * Radius;
 
         }
-
+        /// <summary>
+        /// whether a sphere and a ray intersect
+        /// </summary>
+        /// <param name="ray"></param>
+        /// <param name="t0">lond of ray 1 to point 1</param>
+        /// <param name="t1">lond of ray 2 to point 2</param>
+        /// <returns></returns>
         internal override bool ObjectInter(Ray ray,out double t0, out double t1)
         {
             Vector s = center - ray.Origin;
