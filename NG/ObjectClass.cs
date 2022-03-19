@@ -11,12 +11,11 @@ namespace NG
 {
     internal abstract class Object : ICloneable
     {
+        public static readonly Color DefaultColor = new Color { R = 255, G = 255, B = 255 };
         internal Vector center;
-        internal long mass;
         internal readonly Color color;
-        internal double V;
         //internal double light_emittance;
-        internal Object(Vector center)  : this(center, new Color { R = 255, G = 255, B = 255 })
+        internal Object(Vector center)  : this(center, DefaultColor)
         {
             // nothing
         }
@@ -28,10 +27,11 @@ namespace NG
 
         internal abstract bool ObjectInter(Ray ray, out double t0, out double t1);
 
-        internal virtual List<Object> GenerationObjInCube(List<Object> ListObj, Vector p1, Vector p2, double density)
+        internal virtual List<Object> GenerationObjInCube(Vector p1, Vector p2, double density)
         {
+            List<Object> ListObj = new List<Object>();
             double v = (p1.X - p2.X) * (p1.Y - p2.Y) * (p1.Z - p2.Z);
-            for (int i = 0; i < (int)(v / this.V * density); i++)
+            for (int i = 0; i < (int)(v / Volume() * density); i++)
             {
                 Object O = (Object)Clone();
                 O.center = new Vector(new Random().Next((int)p2.X, (int)p1.X), new Random().Next((int)p2.Y, (int)p1.Y), new Random().Next((int)p2.Z, (int)p1.Z));
@@ -44,20 +44,22 @@ namespace NG
         {
             return MemberwiseClone();
         }
+        public abstract double Volume();
+        
     }
     internal class Sphere : Object
     {
         int Radius;
-        internal Sphere(Vector center, int Radius) : base(center)
+        double V;
+        
+
+        internal Sphere(Vector center, int Radius) : this(center, DefaultColor, Radius)
         {
-            this.Radius = Radius;
-            V = 4 / 3 * M.PI * Radius * Radius * Radius;
         }
         internal Sphere(Vector center, Color color, int Radius) : base(center, color)
         {
             this.Radius = Radius;
-            V = 4 / 3 * M.PI * Radius * Radius * Radius;
-
+            V = CalculateVolume();
         }
         /// <summary>
         /// whether a sphere and a ray intersect
@@ -74,13 +76,25 @@ namespace NG
                 d*d,    -2*(d*s),   s*s-(Radius*Radius),out t0, out t1);
         }
 
-        bool CollidesWith(Sphere b)
+        internal bool CollidesWith(Sphere b)
         {
             return M.Sqrt((center - b.center).X) + M.Sqrt((center - b.center).Y) + M.Sqrt((center - b.center).Z) <= M.Sqrt(Radius + b.Radius);
         }
+        private double CalculateVolume()
+        {
+            return 4 / 3 * M.PI * Radius * Radius * Radius;
+        }
+        public override double Volume()
+        {
+            return V;
+        }
     }
-    class Electron : Sphere
+
+
+
+    /*class Electron : Sphere
     {
+        long mass;
         Electron(Vector C) : base(C, Color.FromArgb(255, 0, 0, 255), 1)
         {
             mass = 1;
@@ -88,6 +102,8 @@ namespace NG
     }
     class Proton : Sphere
     {
+        long mass;
+
         Proton(Vector C) : base(C, Color.FromArgb(255, 255, 0, 0), 45)
         {
             mass = 45;
@@ -95,9 +111,39 @@ namespace NG
     }
     class Neitron : Sphere
     {
+        long mass;
         Neitron(Vector C) : base(C, Color.FromArgb(255, 0, 255, 0), 45)
         {
             mass = 45;
+        }
+    }
+    /*internal class GroupSpherical
+    {
+        List<Object> objects;
+        Sphere sphere;
+        internal GroupSpherical(Sphere s)
+        {
+            sphere = s;
+        }
+        internal GroupSpherical(Vector v, int r)
+        {
+            sphere = new Sphere(v,r);
+        }
+        internal bool ChekingAdd(Sphere s)
+        {
+            if (sphere.CollidesWith(s))
+            {
+                if (!objects.Contains(s))
+                {
+                    objects.Add(s);
+                }
+                return true;
+            }
+            else
+            {
+                objects.Remove(s);
+                return false;
+            }
         }
     }
     /*class Star : Sphere

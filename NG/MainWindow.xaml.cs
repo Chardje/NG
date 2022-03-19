@@ -22,7 +22,7 @@ namespace NG
     {
         public Random R = new Random();
         Camera camera = new Camera(new Vector(0, 0, 0), new Vector(0, 0, 500));
-        internal List<Object> objects = new List<Object>();
+        internal Dictionary<Vector, Unit> units = new Dictionary<Vector, Unit>();
         private readonly Stopwatch renderingStopWatch = new Stopwatch();
 
         private TimeSpan totalRenderingTime = new TimeSpan();
@@ -37,42 +37,14 @@ namespace NG
             timer.Interval = new TimeSpan(0, 0, 0, 0, 250);
             timer.Start();
             #endregion
-            /*objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 63, G = 127, B = 255, }, 100));
-            objects.Add(new Sphere(new Vector(600, 0, 1000), new Color { R = 127, G = 63, B = 255, }, 50));
-            objects.Add(new Sphere(new Vector(0, 150, 1600), new Color { R = 255, G = 127, B = 63, }, 50));
-            objects.Add(new Sphere(new Vector(0, -50, 500), new Color { R = 63, G = 255, B = 127, }, 20));
-            objects.Add(new Sphere(new Vector(-150, -150, 750), new Color { R = 127, G = 255, B = 63, }, 20));
-            objects.Add(new Sphere(new Vector(150, -150, 1600), new Color { R = 255, G = 63, B = 127, }, 20));
 
-            objects.Add(new Sphere(new Vector(-400, -60, 900), new Color { R = 255, G = 0, B = 0, }, 100));
-            objects.Add(new Sphere(new Vector(-400,  60, 1000), new Color { R = 0, G = 255, B = 0, }, 160));*/
-
-            objects = new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(objects, new Vector(450, 200, 3500), new Vector(-450, -200, 500), 0.3);
-
-            /*objects.Add(new Sphere(new Vector(400, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(200, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(0, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(-200, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(-400, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-
-            objects.Add(new Sphere(new Vector(400, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(200, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(-200, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(-400, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-
-            objects.Add(new Sphere(new Vector(400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(0, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(-200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
-            objects.Add(new Sphere(new Vector(-400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));*/
-
+            units = Distribution(new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(new Vector(450, 200, 3500), new Vector(-450, -200, 500), 0.3));
         }
 
         private void RenewDebugMenu(float fps)
         {
             FPS.Content = "FPS: " + fps;
-            NofObj.Content = "NofObj: " + objects.Count;
+            NofObj.Content = "NofObj: " + units.Count;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -84,6 +56,22 @@ namespace NG
             totalRenderingTime += renderingStopWatch.Elapsed;
             totalCount += 1;
             Debug.WriteLine($"Rendering: {renderingStopWatch.Elapsed} {totalCount} {totalRenderingTime / totalCount}");
+        }
+        private Dictionary<Vector, Unit> Distribution(List<Object> obj)
+        {
+            int r = 150;
+            Dictionary<Vector, Unit> D = new Dictionary<Vector, Unit>();
+            for (int x = -r; x < r; x++)
+                for (int y = -r; y < r; y++)
+                    for (int z = -r; z < r; z++)
+                    {
+                        D.Add(new Vector(x, y, z), new Unit(new Vector(x, y, z), 150));
+                        foreach (Object objItem in obj)
+                        {
+                            D[new Vector(x, y, z)].Add(objItem);
+                        }
+                    }
+            return D;
         }
     }
 }

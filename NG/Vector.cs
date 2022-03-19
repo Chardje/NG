@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -118,36 +119,68 @@ namespace NG
                         array[baseindex + 2] = 0;
                         array[baseindex + 3] = 255;
                     }
-                    double t = double.PositiveInfinity;
-                    Object best = null;
-                    for (int i = 0; i < window.objects.Count; i++) 
+                    foreach (KeyValuePair<Vector,Unit> U in window.units)
                     {
-                        Object obj = window.objects[i];
-                        Vector z = obj.center - position;
-                        //if (z * direction > 0.9 * direction.Length * z.Length)
+                        Sphere S = new Sphere(U.Key, U.Value.size);
+                        if (S.ObjectInter(ray, out double _, out double _))
                         {
-                            if (obj.ObjectInter(ray, out double t0, out double _) && t0 > 0.1 && t > t0)
-                            {//select the object that is closest to the camera
-                                best = obj;
-                                t = t0;
+                            double t = double.PositiveInfinity;
+                            Object best = null;
+                            for (int i = 0; i < U.Value.objects.Count; i++)
+                            {
+                                Object obj = U.Value.objects[i];
+                                Vector z = obj.center - position;
+                                //if (z * direction > 0.9 * direction.Length * z.Length)
+                                {
+                                    if (obj.ObjectInter(ray, out double t0, out double _) && t0 > 0.1 && t > t0)
+                                    {
+                                        best = obj;
+                                        t = t0;
+                                    }
+                                }
                             }
+
+                            if (best != null)
+                            {
+                                Vector sphereNorm = (t * ray.Direction - best.center).Norm;
+                                double product = System.Math.Clamp(-(sphereNorm * ray.Direction.Norm), 0, 1);
+                                Debug.Assert(product >= 0 && product <= 1, $"product = {product}");
+                                double k = product;
+                                int baseindex = 4 * (h * width + w);
+                                array[baseindex + 0] = (byte)(best.color.B * k);
+                                array[baseindex + 1] = (byte)(best.color.G * k);
+                                array[baseindex + 2] = (byte)(best.color.R * k);
+                            } 
                         }
-                    }
-                    if (best != null)
-                    {
-                        //paint over a pixel depending on the pixel normal
-                        Vector sphereNorm = (t * ray.Direction - best.center).Norm;
-                        double product = System.Math.Clamp(-(sphereNorm * ray.Direction.Norm), 0, 1);
-                        Debug.Assert(product >= 0 && product <= 1, $"product = {product}");
-                        double k = product;
-                        int baseindex = 4 * (h * width + w);
-                        array[baseindex + 0] = (byte)(best.color.B * k);
-                        array[baseindex + 1] = (byte)(best.color.G * k);
-                        array[baseindex + 2] = (byte)(best.color.R * k);
                     }
                 }
             }
             writeableBitmap.WritePixels(new Int32Rect(0, 0, width, height), array, 4 * width, 0);
         }
+    }
+
+    public class Unit
+    {
+
+        internal Sphere ColaiderS;
+
+        internal List<Object> objects = new List<Object>();
+
+        public int size;
+
+        public Unit(Vector centre, int size) 
+        {
+            ColaiderS = new Sphere(centre,(int)(size * 1.7320508075688772935274463415059)/2);
+            this.size = size;
+        }
+        internal void Add(Object O)
+        {
+            if(O is Sphere)
+            if (((Sphere)O).CollidesWith(ColaiderS))
+            {
+                objects.Add(O);
+            }
+        }
+
     }
 }
