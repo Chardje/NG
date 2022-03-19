@@ -78,7 +78,8 @@ namespace NG
 
         internal bool CollidesWith(Sphere b)
         {
-            return M.Sqrt((center - b.center).X) + M.Sqrt((center - b.center).Y) + M.Sqrt((center - b.center).Z) <= M.Sqrt(Radius + b.Radius);
+            Vector centmin = center - b.center;
+            return M.Sqrt(centmin.X) + M.Sqrt(centmin.Y) + M.Sqrt(centmin.Z) <= M.Sqrt(Radius + b.Radius);
         }
         private double CalculateVolume()
         {

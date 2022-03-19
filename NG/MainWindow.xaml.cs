@@ -38,7 +38,38 @@ namespace NG
             timer.Start();
             #endregion
 
-            units = Distribution(new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(new Vector(450, 200, 3500), new Vector(-450, -200, 500), 0.3));
+            List<Object> objects = new List<Object>();
+            objects = new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(new Vector(500, 500, 3500), new Vector(-500, -500, -2000), 0.3);
+            /*
+            objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 63, G = 127, B = 255, }, 100));
+            objects.Add(new Sphere(new Vector(600, 0, 1000), new Color { R = 127, G = 63, B = 255, }, 50));
+            objects.Add(new Sphere(new Vector(0, 150, 1600), new Color { R = 255, G = 127, B = 63, }, 50));
+            objects.Add(new Sphere(new Vector(0, -50, 500), new Color { R = 63, G = 255, B = 127, }, 20));
+            objects.Add(new Sphere(new Vector(-150, -150, 750), new Color { R = 127, G = 255, B = 63, }, 20));
+            objects.Add(new Sphere(new Vector(150, -150, 1600), new Color { R = 255, G = 63, B = 127, }, 20));
+
+            objects.Add(new Sphere(new Vector(-400, -60, 900), new Color { R = 255, G = 0, B = 0, }, 100));
+            objects.Add(new Sphere(new Vector(-400,  60, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            */
+            /*objects.Add(new Sphere(new Vector(400, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(200, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(0, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-200, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-400, 100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+
+            objects.Add(new Sphere(new Vector(400, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(200, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(0, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-200, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-400, 0, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+
+            objects.Add(new Sphere(new Vector(400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(0, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
+            objects.Add(new Sphere(new Vector(-400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));*/
+            units = Distribution(objects);
+
         }
 
         private void RenewDebugMenu(float fps)
