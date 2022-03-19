@@ -44,7 +44,7 @@ namespace NG
         private void RenewDebugMenu(float fps)
         {
             FPS.Content = "FPS: " + fps;
-            NofObj.Content = "NofObj: " + units.Count;
+            //NofObj.Content = "NofObj: " + units.Count;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -59,21 +59,22 @@ namespace NG
         }
         private Dictionary<Vector, Unit> Distribution(List<Object> obj)
         {
-            int rx = 450;
-            int ry = 200;
-            int rz = 1500;
+            int rx = 2000;
+            int ry = 2000;
+            int rz = 3000;
             int size = 500;
             Dictionary<Vector, Unit> D = new Dictionary<Vector, Unit>();
             for (int x = -rx; x < rx; x+=size)
                 for (int y = -ry; y < ry; y += size)
                     for (int z = -rz; z < rz; z += size)
                     {
-                        Vector C = new Vector(x, y, z + 2000 / size);
-                        D.Add(C, new Unit(new Vector(x,y,z + 2000), size));
+                        Vector C = new Vector(x, y, z);
+                        D.Add(C, new Unit(new Vector(x,y,z), size));
                         foreach (Object objItem in obj)
                         {
                             D[C].Add(objItem);
                         }
+                        if (D[C].objects.Count==0) D.Remove(C);
                     }
             return D;
         }
