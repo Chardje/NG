@@ -59,16 +59,20 @@ namespace NG
         }
         private Dictionary<Vector, Unit> Distribution(List<Object> obj)
         {
-            int r = 150;
+            int rx = 450;
+            int ry = 200;
+            int rz = 1500;
+            int size = 500;
             Dictionary<Vector, Unit> D = new Dictionary<Vector, Unit>();
-            for (int x = -r; x < r; x++)
-                for (int y = -r; y < r; y++)
-                    for (int z = -r; z < r; z++)
+            for (int x = -rx; x < rx; x+=size)
+                for (int y = -ry; y < ry; y += size)
+                    for (int z = -rz; z < rz; z += size)
                     {
-                        D.Add(new Vector(x, y, z), new Unit(new Vector(x, y, z), 150));
+                        Vector C = new Vector(x, y, z + 2000 / size);
+                        D.Add(C, new Unit(new Vector(x,y,z + 2000), size));
                         foreach (Object objItem in obj)
                         {
-                            D[new Vector(x, y, z)].Add(objItem);
+                            D[C].Add(objItem);
                         }
                     }
             return D;
