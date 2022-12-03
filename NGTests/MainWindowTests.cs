@@ -23,6 +23,7 @@ namespace NG.Tests
             EllipseF e0 = new EllipseF(x0, y0, d0);
             EllipseF e1 = new EllipseF(x1, y1, d1);
             Assert.AreEqual(expected: collide, actual: Collide(e0, e1));
-        }*/
+        }
+        */
     }
 }
