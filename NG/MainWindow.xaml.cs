@@ -15,6 +15,18 @@ using System.Windows.Threading;
 
 namespace NG
 {
+    internal static class Extensions
+    {
+        internal static int SuperCount(this Dictionary<Vector, Unit> units)
+        {
+            int result = 0;
+            foreach (Unit unit in units.Values)
+            {
+                result += unit.Count();
+            }
+            return result;
+        }
+    }
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
@@ -37,7 +49,9 @@ namespace NG
             timer.Interval = new TimeSpan(0, 0, 0, 0, 250);
             timer.Start();
             #endregion
-
+#if true
+            units = Distribution(new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(new Vector(500, 500, 3500), new Vector(-500, -500, -2000), 0.5));
+#else
             List<Object> objects = new List<Object>();
             objects = new Sphere(new Vector(0, 0, 0), new Color { R = 63, G = 255, B = 127, }, 100).GenerationObjInCube(new Vector(500, 500, 3500), new Vector(-500, -500, -2000), 0.3);
             /*
@@ -69,21 +83,24 @@ namespace NG
             objects.Add(new Sphere(new Vector(-200, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));
             objects.Add(new Sphere(new Vector(-400, -100, 1000), new Color { R = 0, G = 255, B = 0, }, 160));*/
             units = Distribution(objects);
-
+            
+#endif
         }
 
-        private void RenewDebugMenu(float fps)
+        private void RenewDebugMenu(float fps,int numofObj,int rendObj)
         {
             FPS.Content = "FPS: " + fps;
-            //NofObj.Content = "NofObj: " + units.Count;
+            NumofObj.Content = "NumofObj: " + numofObj;
+            RendObj.Content = "RendObj: " + rendObj;
         }
+
 
         private void timer_Tick(object sender, EventArgs e)
         {
             renderingStopWatch.Restart();
-            camera.RenderTo(this);
+            int rendObj = camera.RenderTo(this);
             renderingStopWatch.Stop();
-            RenewDebugMenu((float)(1 / renderingStopWatch.Elapsed.TotalSeconds));
+            RenewDebugMenu((float)(1 / renderingStopWatch.Elapsed.TotalSeconds), units.SuperCount(), rendObj);
             totalRenderingTime += renderingStopWatch.Elapsed;
             totalCount += 1;
             Debug.WriteLine($"Rendering: {renderingStopWatch.Elapsed} {totalCount} {totalRenderingTime / totalCount}");
@@ -95,18 +112,24 @@ namespace NG
             int rz = 3000;
             int size = 500;
             Dictionary<Vector, Unit> D = new Dictionary<Vector, Unit>();
-            for (int x = -rx; x < rx; x+=size)
+            for (int x = -rx; x < rx; x += size)
+            {
                 for (int y = -ry; y < ry; y += size)
+                {
                     for (int z = -rz; z < rz; z += size)
                     {
-                        Vector C = new Vector(x, y, z);
-                        D.Add(C, new Unit(new Vector(x,y,z), size));
+                        Vector cord = new Vector(x, y, z);
+                        Unit unit = new Unit(cord, size);
                         foreach (Object objItem in obj)
                         {
-                            D[C].Add(objItem);
+                            //try add item to unit
+                            unit.Add(objItem);
                         }
-                        if (D[C].objects.Count==0) D.Remove(C);
+                        if (unit.Count() > 0) D.Add(cord, unit);
+
                     }
+                }
+            }
             return D;
         }
     }

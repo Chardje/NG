@@ -91,7 +91,7 @@ namespace NG
             position = P;
             direction = D;
         }
-        public string RenderTo(MainWindow window)
+        public int RenderTo(MainWindow window)
         {
             int width = (int)window.BackgroundImage.Width;
             int height = (int)window.BackgroundImage.Height;
@@ -106,7 +106,7 @@ namespace NG
                 window.BackgroundImage.Source = writeableBitmap;
             }
             byte[] array = new byte[width * height * 4];
-            List<Object> rend=new List<Object>();
+            ISet<Object> rend = new HashSet<Object>();
             //iterate over all pixels and vectors
             for (int h = 0; h < height; h++) 
             {
@@ -114,38 +114,40 @@ namespace NG
                 {
                     Ray ray = new Ray(position, new Vector(direction.X + w - width / 2, direction.Y + h - height / 2, direction.Z));
                     { 
+                        //back grownd
                         int baseindex = 4 * (h * width + w);
                         array[baseindex + 0] = 0;
                         array[baseindex + 1] = 0;
                         array[baseindex + 2] = 0;
                         array[baseindex + 3] = 255;
                     }
-                    foreach (KeyValuePair<Vector,Unit> U in window.units)
+                    foreach (KeyValuePair<Vector,Unit> unit in window.units)
                     {
-                        Sphere S = new Sphere(U.Key, U.Value.size);
+                        Sphere S = unit.Value.ColaiderS;
+                        //если луч пересикает групу
                         if (S.ObjectInter(ray, out double _, out double _))
                         {
                             double t = double.PositiveInfinity;
                             Object best = null;
-                            for (int i = 0; i < U.Value.objects.Count; i++)
+                            foreach (Object obj in unit.Value.objects) 
                             {
-                                Object obj = U.Value.objects[i];
-                                Vector z = obj.center - position;                                
+                                //Vector z = obj.center - position;                                
                                 //if (z * direction > 0.9 * direction.Length * z.Length)
                                 {
-                                    if (obj.ObjectInter(ray, out double t0, out double _) )
+                                    if (obj.ObjectInter(ray, out double t0, out double _))
                                     {
-                                        if (rend.IndexOf(obj) == -1)
-                                            rend.Add(obj);
+                                        //find most Near obj
                                         if (t0 > 0.1 && t > t0)
                                         {
                                             best = obj;
                                             t = t0;
                                         }
                                     }
-                                }
+                                }  
                             }
+                            rend.Add(best);
 
+                            //set color sphere
                             if (best != null)
                             {
                                 Vector sphereNorm = (t * ray.Direction - best.center).Norm;
@@ -162,7 +164,7 @@ namespace NG
                 }
             }
             writeableBitmap.WritePixels(new Int32Rect(0, 0, width, height), array, 4 * width, 0);
-            return ""+rend.Count;
+            return rend.Count;
         }
         
     }
@@ -189,6 +191,9 @@ namespace NG
                 objects.Add(O);
             }
         }
-
+        public int Count()
+        {
+            return objects.Count;
+        }
     }
 }
